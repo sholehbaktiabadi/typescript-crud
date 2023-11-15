@@ -1,0 +1,15 @@
+version: '3'
+services:
+  webapp:
+    image: ts-crud:latest
+    ports:
+      - "5522:5522"
+    environment:
+        - APP_PORT=5522
+        - NODE_ENV=development
+        - DB_HOST=host.docker.internal
+        - DB_PORT=3306
+        - DB_NAME=local
+        - DB_USER=root
+        - DB_PASSWORD=root
+
