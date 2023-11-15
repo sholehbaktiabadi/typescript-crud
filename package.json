@@ -1,5 +1,5 @@
 {
-  "name": "gcp-test",
+  "name": "typescript-crud",
   "version": "1.0.0",
   "description": "",
   "main": "app.ts",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sholehbaktiabadi/gcp-test.git"
+    "url": "git+https://github.com/sholehbaktiabadi/typescript-crud.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sholehbaktiabadi/gcp-test/issues"
+    "url": "https://github.com/sholehbaktiabadi/typescript-crud/issues"
   },
-  "homepage": "https://github.com/sholehbaktiabadi/gcp-test#readme",
+  "homepage": "https://github.com/sholehbaktiabadi/typescript-crud#readme",
   "dependencies": {
     "express": "^4.18.2",
     "mysql2": "^3.1.2",
