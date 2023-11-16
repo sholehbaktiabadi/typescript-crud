@@ -19,8 +19,9 @@ export class UserService{
     async findOne(req: Request, res: Response){
         try {
             const id: string = req.params.id
-            const data = await this.userRepository.findOne(id)
-            return ResOK(res, data)
+            const selected = await this.userRepository.findOne(id)
+            if(!selected) return ResErr(res, 400, 'data not found')
+            return ResOK(res, selected)
         } catch (error) {
             return ResErr(res, 500, error)
         }
