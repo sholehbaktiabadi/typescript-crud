@@ -2,12 +2,18 @@ import express, { Application, json } from 'express'
 import { env } from './src/config/env'
 import { userRoutes } from './src/modules/user/user.route'
 import { AppDataSource } from './src/config/db'
+import { Logger } from './src/utils/logger'
 
-const app: Application = express()
-AppDataSource.initialize().then(()=> console.log('connected')).catch(err=> console.log(err))
-const { APP_PORT, NODE_ENV } = env()
-app.use(json())
-app.use(userRoutes)
-app.listen(APP_PORT, function () {
-    console.log(`App ${NODE_ENV} is listening on port ${APP_PORT} !`)
-})
+async function bootstrap() {
+    const app: Application = express()
+    const dbConnection = await AppDataSource.initialize()
+    Logger.info(`isMysqlConnected: ${dbConnection.isInitialized}`)
+    const { APP_PORT, NODE_ENV } = env()
+    app.use(json())
+    app.use(userRoutes)
+    app.listen(APP_PORT, function () {
+        Logger.success(`App ${NODE_ENV} is listening on port ${APP_PORT} !`)
+    })
+}
+
+bootstrap()

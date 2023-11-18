@@ -16,4 +16,6 @@ export const AppDataSource = new DataSource({
     entities: [User],
     subscribers: [],
     migrations: [],
+    poolSize: 5,
+    connectTimeout: 300000
 })
