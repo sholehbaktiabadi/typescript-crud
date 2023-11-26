@@ -19,6 +19,10 @@ export class UserRepository {
     return await this.userRepository.findOne({ where: { id } });
   }
 
+  async findOneByUsername(username: string) {
+    return await this.userRepository.findOne({ where: { username } });
+  }
+
   async delete(id: string) {
     return await this.userRepository.delete(id);
   }
