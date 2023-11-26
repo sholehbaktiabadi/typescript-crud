@@ -8,8 +8,9 @@ export class UserService {
 
   async create(req: Request, res: Response) {
     try {
-      const body: User = req.body;
-      const data = await this.userRepository.create(body);
+      const { username, password }: User = req.body;
+      if(!username || !password) return ResErr(res, 400, 'username & password is required')
+      const data = await this.userRepository.create({username, password});
       return ResOK(res, data);
     } catch (error) {
       return ResErr(res, 500, error);
