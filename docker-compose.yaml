@@ -12,4 +12,7 @@ services:
         - DB_NAME=local
         - DB_USER=root
         - DB_PASSWORD=root
+        - REDIS_HOST=host.docker.internal
+        - REDIS_PORT=6379
+        - JWT_SECRET=jwtKey
 
