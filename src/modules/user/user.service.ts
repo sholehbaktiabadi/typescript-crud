@@ -2,6 +2,13 @@ import { Request, Response } from 'express';
 import { UserRepository } from './user.repository';
 import { User } from './user.entity';
 import { ResErr, ResOK } from '../../utils/response';
+import {
+  RedisExpOpt,
+  RedisPrefixKey,
+  redisGet,
+  redisResponse,
+  redisSet,
+} from '../../utils/redis';
 
 export class UserService {
   constructor(private userRepository: UserRepository) {}
@@ -9,8 +16,9 @@ export class UserService {
   async create(req: Request, res: Response) {
     try {
       const { username, password }: User = req.body;
-      if(!username || !password) return ResErr(res, 400, 'username & password is required')
-      const data = await this.userRepository.create({username, password});
+      if (!username || !password)
+        return ResErr(res, 400, 'username & password is required');
+      const data = await this.userRepository.create({ username, password });
       return ResOK(res, data);
     } catch (error) {
       return ResErr(res, 500, error);
@@ -54,10 +62,22 @@ export class UserService {
     }
   }
 
-  async getAll(req: Request, res: Response) {
+  async getAll(_req: Request, res: Response) {
     try {
-      const data = await this.userRepository.getAll();
-      return ResOK(res, data);
+      let data: any;
+      data = await redisGet(`${RedisPrefixKey.user}_all`);
+      if (data) {
+        return ResOK(res, redisResponse(data));
+      } else {
+        data = await this.userRepository.getAll();
+        redisSet(
+          RedisPrefixKey.user,
+          'all',
+          JSON.stringify(data),
+          RedisExpOpt.ONE_MINUTE,
+        );
+        return ResOK(res, data);
+      }
     } catch (error) {
       return ResErr(res, 500, error);
     }

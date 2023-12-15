@@ -1,16 +1,18 @@
 import express, { Application, json } from 'express'
-import { env } from './src/config/env'
 import { userRoutes } from './src/modules/user/user.route'
 import { AppDataSource } from './src/config/db'
 import { Logger } from './src/utils/logger'
 import { authRoutes } from './src/modules/auth/auth.route'
 import { middleware } from './src/modules/middleware/middleware'
+import env from './src/config/env'
+import { myRedisConnection } from './src/config/redis'
 
 async function bootstrap() {
     const app: Application = express()
     const dbConnection = await AppDataSource.initialize()
+    myRedisConnection()
     Logger.info(`isMysqlConnected: ${dbConnection.isInitialized}`)
-    const { APP_PORT, NODE_ENV } = env()
+    const { APP_PORT, NODE_ENV } = env
     app.use(json())
     app.use(authRoutes)
     app.use(middleware,userRoutes)

@@ -12,7 +12,7 @@ export class UserRepository {
   }
 
   async getAll() {
-    return await this.userRepository.find();
+    return await this.userRepository.find({ select: ['id', 'username'] });
   }
 
   async findOne(id: string) {

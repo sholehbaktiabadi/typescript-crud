@@ -1,10 +1,11 @@
-import { Request, Response, json } from 'express';
+import { Request, Response } from 'express';
 import { ResErr, ResOK } from '../../utils/response';
 import { User } from '../user/user.entity';
 import { UserRepository } from '../user/user.repository';
 import bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import { env } from '../../config/env';
+import env from '../../config/env';
+import { RedisExpOpt, RedisPrefixKey, redisSet } from '../../utils/redis';
 
 export class AuthService {
   constructor(private userRepository: UserRepository) {}
@@ -18,9 +19,10 @@ export class AuthService {
       const validation = bcrypt.compareSync(password, selected.password);
       if (!validation) return ResErr(res, 403, 'Invalid Password');
       delete selected.password;
-      const token = jwt.sign({ id: selected.id }, env().JWT_SECRET, {
+      const token = jwt.sign({ id: selected.id }, env.JWT_SECRET, {
         expiresIn: '1d',
       });
+      await redisSet(RedisPrefixKey.user, selected.id, token, RedisExpOpt.ONE_DAY)
       return ResOK(res, { ...selected, token });
     } catch (error) {
       return ResErr(res, 500, error);
@@ -36,7 +38,7 @@ export class AuthService {
         username,
         password: hash,
       });
-      const token = jwt.sign({ id: data.id }, env().JWT_SECRET, {
+      const token = jwt.sign({ id: data.id }, env.JWT_SECRET, {
         expiresIn: '1d',
       });
       delete data.password;
