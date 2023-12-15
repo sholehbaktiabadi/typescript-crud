@@ -9,5 +9,6 @@ export const myRedis = createClient({
 export async function myRedisConnection() {
   myRedis
     .on('error', (err) => console.log('Redis Client Error', err))
-    .connect().then(()=> signale.info('isMyRedisConnected: true'));
+    .connect()
+    .then(() => signale.info('isMyRedisConnected: true'));
 }

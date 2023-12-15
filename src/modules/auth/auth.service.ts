@@ -22,7 +22,12 @@ export class AuthService {
       const token = jwt.sign({ id: selected.id }, env.JWT_SECRET, {
         expiresIn: '1d',
       });
-      await redisSet(RedisPrefixKey.user, selected.id, token, RedisExpOpt.ONE_DAY)
+      await redisSet(
+        RedisPrefixKey.user,
+        selected.id,
+        token,
+        RedisExpOpt.ONE_DAY,
+      );
       return ResOK(res, { ...selected, token });
     } catch (error) {
       return ResErr(res, 500, error);
