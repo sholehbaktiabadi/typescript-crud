@@ -11,4 +11,4 @@ COPY . /app
 RUN  npm install && npm run build
 
 # run service
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "pm2"]

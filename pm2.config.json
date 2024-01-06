@@ -1,0 +1,11 @@
+{
+  "apps": [
+      {
+          "name": "typescript_crud",
+          "script": "npm",
+          "args" : "run start",
+          "instances": 1,
+          "autorestart": true
+      }
+  ]
+}
