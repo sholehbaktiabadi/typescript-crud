@@ -15,7 +15,7 @@ async function bootstrap() {
   Logger.info(`isMysqlConnected: ${dbConnection.isInitialized}`);
   const { APP_PORT, NODE_ENV } = env;
   app.use(json());
-  app.get('/', (_req, res: Response) =>
+  app.get('/health-check', (_req, res: Response) =>
     ResOK(res, { status: 'it was a nice' }, 'ok'),
   );
   app.use(authRoutes);
